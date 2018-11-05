@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var envs []envVar
@@ -104,6 +105,43 @@ func Bool(name string, required bool, defaultValue bool, help string) *bool {
 		},
 		func(a interface{}, b interface{}) {
 			*a.(*bool) = b.(bool)
+		},
+		new(string),
+	})
+
+	return v
+}
+
+// Duration something
+func Duration(name string, required bool, defaultValue string, help string) *time.Duration {
+	v := new(time.Duration)
+
+	// parse the default value from a string to a duration
+	defaultDuration, err := time.ParseDuration(defaultValue)
+	if err != nil {
+		defaultDuration = 0 * time.Millisecond
+	}
+
+	envs = append(envs, envVar{
+		v,
+		name,
+		"duration",
+		required,
+		defaultDuration,
+		help,
+		func(a interface{}, b string) error {
+			v, err := time.ParseDuration(b)
+			if err != nil {
+				a = nil
+				return err
+			}
+
+			*a.(*time.Duration) = v
+
+			return nil
+		},
+		func(a interface{}, b interface{}) {
+			*a.(*time.Duration) = b.(time.Duration)
 		},
 		new(string),
 	})

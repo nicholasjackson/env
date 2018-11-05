@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -69,6 +70,28 @@ func TestBoolError(t *testing.T) {
 	err := Parse()
 
 	assert.Contains(t, "expected: nic type: boolean got: a", err.Error())
+}
+
+func TestDurationSetEnv(t *testing.T) {
+	envs = make([]envVar, 0)
+	cleanup := setEnv("nic", "10s")
+	defer cleanup()
+
+	n := Duration("nic", false, "1s", "something")
+	Parse()
+
+	assert.Equal(t, 10*time.Second, *n)
+}
+
+func TestDurationError(t *testing.T) {
+	envs = make([]envVar, 0)
+	cleanup := setEnv("nic", "test")
+	defer cleanup()
+
+	Duration("nic", false, "1s", "something")
+	err := Parse()
+
+	assert.Contains(t, "expected: nic type: duration got: test", err.Error())
 }
 
 func TestSetsDefault(t *testing.T) {
