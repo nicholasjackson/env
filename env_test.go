@@ -50,6 +50,28 @@ func TestIntError(t *testing.T) {
 	assert.Contains(t, "expected: nic type: integer got: a", err.Error())
 }
 
+func TestFloatSetEnv(t *testing.T) {
+	envs = make([]envVar, 0)
+	cleanup := setEnv("nic", "1.1")
+	defer cleanup()
+
+	n := Float("nic", true, 0, "something")
+	Parse()
+
+	assert.Equal(t, 1.1, *n)
+}
+
+func TestFloatError(t *testing.T) {
+	envs = make([]envVar, 0)
+	cleanup := setEnv("nic", "a")
+	defer cleanup()
+
+	Float("nic", false, 0, "something")
+	err := Parse()
+
+	assert.Contains(t, "expected: nic type: float got: a", err.Error())
+}
+
 func TestBoolSetEnv(t *testing.T) {
 	envs = make([]envVar, 0)
 	cleanup := setEnv("nic", "true")

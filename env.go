@@ -81,6 +81,37 @@ func Integer(name string, required bool, defaultValue int, help string) *int {
 	return v
 }
 
+// Float something
+func Float(name string, required bool, defaultValue float64, help string) *float64 {
+	v := new(float64)
+
+	envs = append(envs, envVar{
+		v,
+		name,
+		"float",
+		required,
+		defaultValue,
+		help,
+		func(a interface{}, b string) error {
+			v, err := strconv.ParseFloat(b, 64)
+			if err != nil {
+				a = nil
+				return err
+			}
+
+			*a.(*float64) = float64(v)
+
+			return nil
+		},
+		func(a interface{}, b interface{}) {
+			*a.(*float64) = b.(float64)
+		},
+		new(string),
+	})
+
+	return v
+}
+
 // Bool something
 func Bool(name string, required bool, defaultValue bool, help string) *bool {
 	v := new(bool)
