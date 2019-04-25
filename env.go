@@ -148,21 +148,15 @@ func Bool(name string, required bool, defaultValue bool, help string) *bool {
 }
 
 // Duration something
-func Duration(name string, required bool, defaultValue string, help string) *time.Duration {
+func Duration(name string, required bool, defaultValue time.Duration, help string) *time.Duration {
 	v := new(time.Duration)
-
-	// parse the default value from a string to a duration
-	defaultDuration, err := time.ParseDuration(defaultValue)
-	if err != nil {
-		defaultDuration = 0 * time.Millisecond
-	}
 
 	envs = append(envs, envVar{
 		v,
 		name,
 		"duration",
 		required,
-		defaultDuration,
+		defaultValue,
 		help,
 		func(a interface{}, b string) error {
 			v, err := time.ParseDuration(b)

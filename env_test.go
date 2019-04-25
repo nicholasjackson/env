@@ -99,7 +99,7 @@ func TestDurationSetEnv(t *testing.T) {
 	cleanup := setEnv("nic", "10s")
 	defer cleanup()
 
-	n := Duration("nic", false, "1s", "something")
+	n := Duration("nic", false, 1*time.Second, "something")
 	Parse()
 
 	assert.Equal(t, 10*time.Second, *n)
@@ -110,7 +110,7 @@ func TestDurationError(t *testing.T) {
 	cleanup := setEnv("nic", "test")
 	defer cleanup()
 
-	Duration("nic", false, "1s", "something")
+	Duration("nic", false, 1*time.Second, "something")
 	err := Parse()
 
 	assert.Contains(t, "expected: nic type: duration got: test", err.Error())
