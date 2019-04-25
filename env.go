@@ -26,7 +26,11 @@ type envVar struct {
 	envValue     *string
 }
 
-// String something
+// String captures the value of an environment varialbe
+// name: the name of the environment variable
+// required: if set to true and environment variable does not exist an error will be raised
+// defaultValue: the default value to return if the environment variable is not set
+// help: help string related to the variable
 func String(name string, required bool, defaultValue, help string) *string {
 	v := new(string)
 
@@ -50,8 +54,8 @@ func String(name string, required bool, defaultValue, help string) *string {
 	return v
 }
 
-// Integer something
-func Integer(name string, required bool, defaultValue int, help string) *int {
+// Int something
+func Int(name string, required bool, defaultValue int, help string) *int {
 	v := new(int)
 
 	envs = append(envs, envVar{
@@ -81,8 +85,8 @@ func Integer(name string, required bool, defaultValue int, help string) *int {
 	return v
 }
 
-// Float something
-func Float(name string, required bool, defaultValue float64, help string) *float64 {
+// Float64 something
+func Float64(name string, required bool, defaultValue float64, help string) *float64 {
 	v := new(float64)
 
 	envs = append(envs, envVar{

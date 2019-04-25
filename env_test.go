@@ -33,7 +33,7 @@ func TestIntSetEnv(t *testing.T) {
 	cleanup := setEnv("nic", "1")
 	defer cleanup()
 
-	n := Integer("nic", true, 0, "something")
+	n := Int("nic", true, 0, "something")
 	Parse()
 
 	assert.Equal(t, 1, *n)
@@ -44,29 +44,29 @@ func TestIntError(t *testing.T) {
 	cleanup := setEnv("nic", "a")
 	defer cleanup()
 
-	Integer("nic", false, 0, "something")
+	Int("nic", false, 0, "something")
 	err := Parse()
 
 	assert.Contains(t, "expected: nic type: integer got: a", err.Error())
 }
 
-func TestFloatSetEnv(t *testing.T) {
+func TestFloat64SetEnv(t *testing.T) {
 	envs = make([]envVar, 0)
 	cleanup := setEnv("nic", "1.1")
 	defer cleanup()
 
-	n := Float("nic", true, 0, "something")
+	n := Float64("nic", true, 0, "something")
 	Parse()
 
 	assert.Equal(t, 1.1, *n)
 }
 
-func TestFloatError(t *testing.T) {
+func TestFloat64Error(t *testing.T) {
 	envs = make([]envVar, 0)
 	cleanup := setEnv("nic", "a")
 	defer cleanup()
 
-	Float("nic", false, 0, "something")
+	Float64("nic", false, 0, "something")
 	err := Parse()
 
 	assert.Contains(t, "expected: nic type: float got: a", err.Error())
@@ -129,7 +129,7 @@ func TestHelp(t *testing.T) {
 	envs = make([]envVar, 0)
 	String("SERVER_URI", true, "localhost:8181", "URI for upstream server, i.e. localhost:8181")
 	String("API_KEY", true, "", "API key for upstream server")
-	Integer("TIMEOUT", true, 12, "Timeout duration in seconds")
+	Int("TIMEOUT", true, 12, "Timeout duration in seconds")
 	h := Help()
 
 	fmt.Println(h)
