@@ -6,9 +6,11 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"flag"
 )
 
 var envs []envVar
+var help = flag.Bool("help", false, "--help to show env help")
 
 func init() {
 	envs = make([]envVar, 0)
@@ -180,6 +182,16 @@ func Duration(name string, required bool, defaultValue time.Duration, help strin
 
 // Parse something
 func Parse() error {
+	// Parse the main flags package to enable the --help option
+	flag.Parse()
+	if *help == true {
+		fmt.Println("Configuration values are set using environment variables, for info please see the following list.")
+		fmt.Println("")
+		fmt.Println(Help())
+
+		os.Exit(0)
+	}
+
 	errors := make([]string, 0)
 
 	for _, e := range envs {
