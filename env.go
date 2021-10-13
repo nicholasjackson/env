@@ -215,6 +215,10 @@ func processEnvVar(e envVar) error {
 		e.setDefault(e.value, e.defaultValue)
 		return nil
 	}
+	
+	if *e.envValue == "" && e.required {
+		return fmt.Errorf("%s should be provided", e.name)
+	}
 
 	err := e.setValue(e.value, *e.envValue)
 	if err != nil {
