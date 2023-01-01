@@ -28,6 +28,30 @@ func TestStringSetEnv(t *testing.T) {
 	assert.Equal(t, "is awesome", *n)
 }
 
+func TestEmptyStringRequiredTrueEnv(t *testing.T) {
+	envs = make([]envVar, 0)
+	testEnv := "nic"
+	os.Unsetenv(testEnv)
+	required := true
+
+	String(testEnv, required, "is awesome", "something")
+	err := Parse()
+	assert.Error(t, err)
+}
+
+func TestEmptyStringRequiredFalseEnv(t *testing.T) {
+	envs = make([]envVar, 0)
+	testEnv := "nic"
+	os.Unsetenv(testEnv)
+	required := false
+
+	n := String(testEnv, required, "is awesome", "something")
+	err := Parse()
+
+	assert.Equal(t, "is awesome", *n)
+	assert.NoError(t, err)
+}
+
 func TestIntSetEnv(t *testing.T) {
 	envs = make([]envVar, 0)
 	cleanup := setEnv("nic", "1")
