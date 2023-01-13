@@ -28,7 +28,7 @@ type envVar struct {
 	envValue     *string
 }
 
-// String captures the value of an environment varialbe
+// String captures the value of an environment variable
 // name: the name of the environment variable
 // required: if set to true and environment variable does not exist an error will be raised
 // defaultValue: the default value to return if the environment variable is not set
