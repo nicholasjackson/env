@@ -8,7 +8,7 @@ Env is a simple package providing configuration as environment variables for 12 
 package main
 
 var bindAddress = env.String("BIND_ADDRESS",true,"","bind address for server, i.e. localhost")
-var bindPort = env.Integer("BIND_Port",true,0,"bind port for server, i.e. 9090")
+var bindPort = env.Int("BIND_PORT",true,0,"bind port for server, i.e. 9090")
 
 func main() {
   err := env.Parse()
